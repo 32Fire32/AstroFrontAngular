@@ -1,0 +1,23 @@
+.header{
+  display: flex;
+  align-items: center;
+  padding: 0.9375rem;
+  background-color: cyan;
+  .logo{
+    text-align: center;
+    width: 20%
+  }
+  .nav{
+    width: 60%;
+    text-align: center;
+  }
+  .login{
+    text-align: center;
+    width: 20%;
+  }
+}
+
+.search{
+  text-align: center;
+  padding: .625rem
+}

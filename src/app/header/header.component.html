@@ -1,0 +1,31 @@
+<div class="header">
+  <div class="logo">
+    <span>A.J.A.</span>
+  </div>
+  <div class="nav">
+    <a routerLink="/" style="margin-right: 10px;">Home</a>
+    <a routerLink="chi-siamo" style="margin-right: 10px;">Chi Siamo</a>
+    <a routerLink="contatti" style="margin-right: 10px;">Contatti</a>
+    <a routerLink="associazione" style="margin-right: 10px;" *ngIf="isUserAuthenticated()">CMS Admin</a>
+    <a routerLink="database" style="margin-right: 10px;">Database</a>
+    <a routerLink="pagina-personale" style="margin-right: 10px;" *ngIf="isUserAuthenticated()">Pagina Personale</a>
+  </div>
+
+  <div  class="login" *ngIf="isUserAuthenticated()" style="color:blue">
+    <h5>
+      Sei Loggato
+    </h5>
+    <a (click)="logOut()" style="margin-right: 10px;">Logout</a>
+  </div>
+
+  <div class="login"  *ngIf="!isUserAuthenticated()">
+    <a routerLink="register" style="margin-right: 10px;">Registrati</a>
+    <a routerLink="login" style="margin-right: 10px;">Login</a>
+  </div>
+</div>
+
+<div class="search">
+  <label for="search">Cerca nel Database</label>
+  <input type="text" id="search" name="search">
+</div>
+

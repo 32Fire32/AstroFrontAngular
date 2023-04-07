@@ -1,0 +1,17 @@
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+  <div class="form-container">
+    <h1>Effettua il Login</h1>
+    <div *ngIf="invalidLogin" class="alert">Invalid username or password.</div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Username:</mat-label>
+      <input matInput type="text" name="Username" [(ngModel)]="credentials.username" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Password:</mat-label>
+      <input matInput type="password" name="Password" [(ngModel)]="credentials.password" required>
+  </mat-form-field>
+  </div>
+  <button mat-raised-button type="submit" [disabled]="!loginForm.valid" >Login</button>
+  </div>
+</form>
