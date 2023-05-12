@@ -17,6 +17,9 @@ import { RouterModule } from '@angular/router';
 import { MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DatePipe } from '@angular/common'
 
 
 //component
@@ -35,6 +38,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from './_helpers/auth.guard';
 import { FilterPipe } from './filter.pipe';
+
 
 //services
 import { UpdateService } from './services/update.service';
@@ -63,6 +67,8 @@ export function tokenGetter() {
   ],
   imports: [
     MatToolbarModule,
+    MatNativeDateModule,
+    DatePipe,
     MatProgressBarModule,
     MatListModule,
     BrowserModule,
@@ -71,8 +77,10 @@ export function tokenGetter() {
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+
     MatInputModule,
     MatIconModule,
+    MatDatepickerModule,
     MatSelectModule,
     MatButtonModule,
     HttpClientModule,
@@ -88,7 +96,7 @@ export function tokenGetter() {
     RouterModule,
     MatCardModule
   ],
-  providers: [AuthGuard, UpdateService],
+  providers: [AuthGuard, UpdateService,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

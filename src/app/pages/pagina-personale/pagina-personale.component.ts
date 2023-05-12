@@ -68,14 +68,8 @@ export class PaginaPersonaleComponent implements OnInit {
       const username = data.data.userName
       localStorage.setItem('username', username)
     })
-
-    //reload page
-    // const currentUrl = this.router.url;
-    // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-    //     this.router.navigate([currentUrl]);
-    // });
-    // window.location.reload();
   }
+
   onFileSelected(event :any) {
 
     this.file = event.target.files[0];

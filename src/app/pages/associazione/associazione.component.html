@@ -93,6 +93,23 @@
           </div>
 
         </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Data</mat-label>
+      <input matInput [matDatepicker]="picker" name="eventDate" ngModel>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>--Che tipo di evento?--</mat-label>
+      <mat-select name="eventTypeId" ngModel>
+        <mat-option value="1">Osservatorio</mat-option>
+        <mat-option value="2">Conferenza</mat-option>
+        <mat-option value="3">Evento Online</mat-option>
+        <mat-option value="4">Trasferta</mat-option>
+        <mat-option value="5">Pranzo/Cena</mat-option>
+      </mat-select>
+  </mat-form-field>
     <button mat-raised-button color="primary">Pubblica Nuovo Evento</button>
 </form>
 

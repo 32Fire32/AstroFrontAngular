@@ -4,6 +4,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { NgForm } from '@angular/forms';
 import { StoreService } from 'src/app/services/store.service';
 import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common'
 
 export interface allUsers {
   userName: string;
@@ -21,7 +22,7 @@ export interface allUsers {
   styleUrls: ['./associazione.component.scss']
 })
 export class AssociazioneComponent implements OnInit {
-  constructor(private serv: GetServicesService, public store: StoreService, private http: HttpClient){}
+  constructor(private serv: GetServicesService, public store: StoreService, private http: HttpClient, public datepipe: DatePipe){}
 
   displayedColumns: string[] = ['Username', 'First name', 'Last name', 'Email', 'Subscribed', 'Role', 'Delete'];
 
@@ -69,17 +70,23 @@ export class AssociazioneComponent implements OnInit {
 }
 
 onEvent(form: NgForm){
-  //api per foto copertina evento
-  // if(this.file){
-  //   const formData = new FormData();
-  //   formData.append("UserId", this.store.user.userId)
-  //   formData.append("Image", this.file)
-  //   this.http.post("https://localhost:7167/api/Images/Profile", formData).subscribe((data :any) => {
-  //   console.log(data.data.profileImgUrl)
-  //   this.store.user.profileImgUrl = data.data.profileImgUrl
-  //   });
-  // }
+  //api per evento
+  let date = form.value.date;
+  console.log(form.value.eventDate);
+  let goodDate:string = this.datepipe.transform(date, 'yyyy-MM-dd hh:mm:ss')!
+  console.log(goodDate);
 
+
+    // const formData = new FormData();
+    // formData.append("EventName", form.value.eventName)
+    // formData.append("Description", form.value.description)
+    // formData.append("EventDate", goodDate)
+    // formData.append("Place", form.value.place)
+    // formData.append("EventTypeId", form.value.eventTypeId)
+    // formData.append("Image", this.file)
+    // this.http.post("https://localhost:7167/api/Admin/CreateEvent", formData).subscribe((data :any) => {
+    // console.log(data)
+  // })
 }
 }
 
