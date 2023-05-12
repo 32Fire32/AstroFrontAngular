@@ -18,7 +18,7 @@ const routes: Routes = [
   {path:'associazione', component: AssociazioneComponent},
   {path:'register', component: RegisterComponent},
   {path:'login', component: LoginComponent},
-  {path:'database', component: DatabaseComponent},
+  {path:'database/:id', component: DatabaseComponent},
   {path:'pagina-personale', component: PaginaPersonaleComponent, canActivate: [AuthGuard]},
   {path:'404', component: NotFoundComponent},
   {path: '**', redirectTo: '/404'}

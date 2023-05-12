@@ -1,1 +1,68 @@
-<p>pagina-personale works!</p>
+<h1 style="text-align: center; padding: 20px">Pagina personale di {{username}}</h1>
+
+<div class="infomanage">
+    <div class="info">
+      <span>Foto del profilo: <img id="imageProfile" [src]='pathUrl + this.store.user.profileImgUrl' [alt]="username" style="width: 150px"> </span>
+      <span>Username: <b id="username">{{username ? username : "nessun utente loggato"}}</b></span>
+      <span>Nome: <b id="firstname">{{this.store.user.firstName ? this.store.user.firstName : "nessun nome inserito"}}</b></span>
+      <span>Cognome: <b id="lastname">{{this.store.user.lastName ? this.store.user.lastName : "nessun cognome inserito"}}</b></span>
+      <span>Email: <b id="email">{{this.store.user.email ? this.store.user.email : "nessuna email inserita"}}</b></span>
+      <span>Sei iscritto?:
+        <b class="subscribed"*ngIf="this.store.user.subscribed" >Si</b>
+        <b class="subscribed" *ngIf="!this.store.user.subscribed" >No</b>
+      </span>
+      <span *ngFor="let pref of this.store.user.celestialObjectsPreferences">{{pref.celestialObject.name}}</span>
+      <span *ngFor="let role of this.store.user.roles">{{role.role.roleId}}</span>
+      <button *ngIf="!isAdminAuthenticated()" (click)="modify()">Aggiungi Informazioni</button>
+    </div>
+
+    <div *ngIf="update">
+      <form #patchForm="ngForm" (ngSubmit)="onPatchUser(patchForm)" enctype="multipart/form-data">
+        <mat-form-field appearance="fill">
+          <mat-label>Nuovo Username</mat-label>
+          <input matInput type="text" name="userName" ngModel>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nuovo Nome</mat-label>
+          <input matInput type="text" name="firstName" ngModel>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nuovo Cognome</mat-label>
+          <input matInput type="text" name="lastName" ngModel>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nuova Email</mat-label>
+          <input matInput type="email" name="email" ngModel>
+        </mat-form-field>
+          <input type="file" class="file-input"
+            (change)="onFileSelected($event)" style="display: none" #fileUpload>
+
+              <div class="file-upload">
+
+                {{fileName || "No file uploaded yet."}}
+
+                <button mat-mini-fab color="primary" class="upload-btn" type="button"
+                (click)="fileUpload.click()">
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+
+                <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+                  <img [src]="imageURL" [alt]="this.store.user.username" style="width: 50px;">
+                </div>
+
+              </div>
+        <mat-form-field appearance="fill">
+            <mat-label>--Sei iscritto?--</mat-label>
+            <mat-select name="subscribed" ngModel>
+              <mat-option value="true">Si</mat-option>
+              <mat-option value="false">No</mat-option>
+            </mat-select>
+        </mat-form-field>
+          <button mat-raised-button color="primary">Modifica informazioni</button>
+      </form>
+    </div>
+
+</div>
+
+
+

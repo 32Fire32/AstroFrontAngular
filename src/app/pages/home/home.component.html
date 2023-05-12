@@ -1,4 +1,6 @@
-<h1>Ciao {{username}}!</h1>
+<div *ngIf="username; then bloccoIf else bloccoElse"></div>
+<ng-template #bloccoIf ><h1>Ciao {{username}}!</h1></ng-template>
+<ng-template #bloccoElse ><h1>Ciao {{notLoggedIn}}</h1></ng-template>
 
 <section>
   <span>

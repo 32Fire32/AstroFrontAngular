@@ -1,31 +1,40 @@
 <div class="header">
   <div class="logo">
-    <span>A.J.A.</span>
+    <img class="logophoto" src="../../assets/logophoto.png" alt="logophoto">
+    <span class="logotext"> <b>A.J.A.</b> </span>
   </div>
   <div class="nav">
     <a routerLink="/" style="margin-right: 10px;">Home</a>
     <a routerLink="chi-siamo" style="margin-right: 10px;">Chi Siamo</a>
     <a routerLink="contatti" style="margin-right: 10px;">Contatti</a>
-    <a routerLink="associazione" style="margin-right: 10px;" *ngIf="isUserAuthenticated()">CMS Admin</a>
-    <a routerLink="database" style="margin-right: 10px;">Database</a>
-    <a routerLink="pagina-personale" style="margin-right: 10px;" *ngIf="isUserAuthenticated()">Pagina Personale</a>
+    <a *ngIf="isAdminAuthenticated()" routerLink="associazione" style="margin-right: 10px;">CMS Admin</a>
   </div>
 
-  <div  class="login" *ngIf="isUserAuthenticated()" style="color:blue">
-    <h5>
-      Sei Loggato
-    </h5>
-    <a (click)="logOut()" style="margin-right: 10px;">Logout</a>
+  <div class="search">
+    <label for="search">Cerca nel Database</label>
+    <input type="text" id="search" [(ngModel)]="searchObj"
+    placeholder="Enter stellar object to search" >
+    <div *ngFor="let o of objects | appFilter: searchObj" >
+      <a [routerLink]="['/database', o.celestialObjectId]" (click)="onClick()" >{{o.name}}</a>
+    </div>
+  </div>
+
+  <div  class="login" *ngIf="isUserAuthenticated()">
+    <h3>
+      <button mat-button [matMenuTriggerFor]="menu" style="color:inherit">{{username}}</button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <a routerLink="pagina-personale" style="margin-right: 0px !important; padding: 5px;">Pagina Personale</a>
+        </mat-menu>
+    </h3>
+      <a (click)="logOut()" style="margin-right: 10px; cursor: pointer;"><h3>Logout</h3></a>
   </div>
 
   <div class="login"  *ngIf="!isUserAuthenticated()">
     <a routerLink="register" style="margin-right: 10px;">Registrati</a>
     <a routerLink="login" style="margin-right: 10px;">Login</a>
   </div>
+
 </div>
 
-<div class="search">
-  <label for="search">Cerca nel Database</label>
-  <input type="text" id="search" name="search">
-</div>
+
 
