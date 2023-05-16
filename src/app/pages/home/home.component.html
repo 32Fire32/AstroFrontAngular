@@ -10,7 +10,19 @@
 <hr>
 <section>
   <span>
-    Eventi Associazione
+    <h2>I Prossimi Eventi</h2>
+      <ul class="event-list">
+        <li *ngFor="let e of events" style="width: calc(100vw / 5 - 10px)">
+          <span>Quando: {{e.eventDate}}</span>
+          <h3>Nome: {{e.eventName}}</h3>
+          <small>Tipo di Evento: {{e.types[0].eventType.name}}</small>
+          <div>
+            <img id="eventProfile" [src]='pathUrl + e.eventImgUrl' [alt]="e.eventName" style="width: 150px">
+          </div>
+          <p>{{e.description}}</p>
+          <span>dove: {{e.place}}</span>
+        </li>
+      </ul>
   </span>
 </section>
 <hr>

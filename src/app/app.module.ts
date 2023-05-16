@@ -18,8 +18,9 @@ import { MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common'
+import { MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 
 
 //component
@@ -33,7 +34,7 @@ import { ChiSiamoComponent } from './pages/chi-siamo/chi-siamo.component';
 import { ContattiComponent } from './pages/contatti/contatti.component';
 import { PaginaPersonaleComponent } from './pages/pagina-personale/pagina-personale.component';
 import { DatabaseComponent } from './pages/database/database.component';
-import { AssociazioneComponent } from './pages/associazione/associazione.component';
+import { AssociazioneComponent, MY_FORMATS } from './pages/associazione/associazione.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from './_helpers/auth.guard';
@@ -67,6 +68,7 @@ export function tokenGetter() {
   ],
   imports: [
     MatToolbarModule,
+    MomentDateModule,
     MatNativeDateModule,
     DatePipe,
     MatProgressBarModule,
@@ -96,7 +98,9 @@ export function tokenGetter() {
     RouterModule,
     MatCardModule
   ],
-  providers: [AuthGuard, UpdateService,DatePipe],
+  providers: [AuthGuard, UpdateService,DatePipe,
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }
+    ,{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

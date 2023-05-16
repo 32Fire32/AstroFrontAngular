@@ -15,7 +15,7 @@ export class FileUploadService {
 
     formData.append('file', file);
 
-    const req = new HttpRequest('POST', `${this.baseUrl}/images`, formData, {
+    const req = new HttpRequest('POST', `${this.baseUrl}/ObservationImage`, formData, {
       reportProgress: true,
       responseType: 'json'
     });

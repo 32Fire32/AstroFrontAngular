@@ -42,4 +42,24 @@ export class GetServicesService {
     return this.http.delete(`${url}${id}`)
   }
 
+  removeEvent(url:string, id:number){
+    return this.http.delete(`${url}${id}`)
+  }
+
+  GetUserObservations(url:string, id:string){
+    return this.http.get(`${url}${id}`)
+  }
+
+  removeObservation(url:string, id:number){
+    return this.http.delete(`${url}${id}`)
+  }
+
+  GetAllEvents(url: string){
+    return this.http.get(url)
+  }
+
+  changeRole(url:string, body: {}){
+  return this.http.post(url, body);
+  }
+
 }
