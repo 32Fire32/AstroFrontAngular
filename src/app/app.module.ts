@@ -32,6 +32,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ChiSiamoComponent } from './pages/chi-siamo/chi-siamo.component';
 import { ContattiComponent } from './pages/contatti/contatti.component';
+import { SchedulerComponent } from './pages/scheduler/scheduler.component';
 import { PaginaPersonaleComponent } from './pages/pagina-personale/pagina-personale.component';
 import { DatabaseComponent } from './pages/database/database.component';
 import { AssociazioneComponent, MY_FORMATS } from './pages/associazione/associazione.component';
@@ -65,6 +66,7 @@ export function tokenGetter() {
     NotFoundComponent,
     FilterPipe,
     UploadImagesComponent,
+    SchedulerComponent,
   ],
   imports: [
     MatToolbarModule,
