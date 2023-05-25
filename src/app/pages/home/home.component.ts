@@ -1,5 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
-import { GetServicesService } from 'src/app/services/get-services.service';
+import { Component, OnInit, AfterContentChecked, Output, EventEmitter, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -8,19 +7,15 @@ import { GetServicesService } from 'src/app/services/get-services.service';
 })
 export class HomeComponent implements OnInit, AfterContentChecked {
 
+slides: any[] = new Array(3).fill({id: -1, src: '', title: '', subtitle: ''});
+
 username: any
 notLoggedIn = "Utente Sconosciuto"
-events: any
-pathUrl = "https://localhost:7167"
 
-  constructor(private serv: GetServicesService){}
+  constructor(){}
 
   ngOnInit(): void {
     this.username = localStorage.getItem("username")
-    this.serv.GetAllEvents("https://localhost:7167/api/Admin/GetListEvents").subscribe((data: any) => {
-      console.log(data)
-      this.events = data
-    })
   }
 
   ngAfterContentChecked(): void {

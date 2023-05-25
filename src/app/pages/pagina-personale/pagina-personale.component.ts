@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { GetServicesService } from 'src/app/services/get-services.service';
 import { StoreService } from 'src/app/services/store.service';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common'
 import { Observable } from 'rxjs';
@@ -36,7 +36,7 @@ export class PaginaPersonaleComponent implements OnInit {
 
   constructor(private serv: GetServicesService, public store: StoreService, private http:HttpClient, public datepipe: DatePipe, private uploadService: FileUploadService) { }
 
-  selectedFiles?: FileList;
+  selectedFiles: any = [];
   progressInfos: any[] = [];
   message: string[] = [];
 
@@ -83,58 +83,37 @@ export class PaginaPersonaleComponent implements OnInit {
     // this.imageInfos = this.uploadService.getFiles();
   }
 
-  selectFiles(event: any): void {
-    this.message = [];
-    this.progressInfos = [];
-    this.selectedFiles = event.target.files;
+  // uploadFiles(): void {
+  //   this.message = [];
 
-    this.previews = [];
-    if (this.selectedFiles && this.selectedFiles[0]) {
-      const numberOfFiles = this.selectedFiles.length;
-      for (let i = 0; i < numberOfFiles; i++) {
-        const reader = new FileReader();
+  //   if (this.selectedFiles) {
+  //     for (let i = 0; i < this.selectedFiles.length; i++) {
+  //       this.upload(i, this.selectedFiles[i]);
+  //     }
+  //   }
+  // }
 
-        reader.onload = (e: any) => {
-          console.log(e.target.result);
-          this.previews.push(e.target.result);
-        };
+  // upload(idx: number, file: File): void {
+  //   this.progressInfos[idx] = { value: 0, fileName: file.name };
 
-        reader.readAsDataURL(this.selectedFiles[i]);
-      }
-    }
-  }
-
-  uploadFiles(): void {
-    this.message = [];
-
-    if (this.selectedFiles) {
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        this.upload(i, this.selectedFiles[i]);
-      }
-    }
-  }
-
-  upload(idx: number, file: File): void {
-    this.progressInfos[idx] = { value: 0, fileName: file.name };
-
-    if (file) {
-      this.uploadService.upload(file).subscribe({
-        next: (event: any) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
-          } else if (event instanceof HttpResponse) {
-            const msg = 'Uploaded the file successfully: ' + file.name;
-            this.message.push(msg);
-            this.imageInfos = this.uploadService.getFiles();
-          }
-        },
-        error: (err: any) => {
-          this.progressInfos[idx].value = 0;
-          const msg = 'Could not upload the file: ' + file.name;
-          this.message.push(msg);
-        }});
-    }
-  }
+  //   if (file) {
+  //     this.uploadService.upload(file).subscribe({
+  //       next: (event: any) => {
+  //         if (event.type === HttpEventType.UploadProgress) {
+  //           this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
+  //         } else if (event instanceof HttpResponse) {
+  //           const msg = 'Uploaded the file successfully: ' + file.name;
+  //           this.message.push(msg);
+  //           this.imageInfos = this.uploadService.getFiles();
+  //         }
+  //       },
+  //       error: (err: any) => {
+  //         this.progressInfos[idx].value = 0;
+  //         const msg = 'Could not upload the file: ' + file.name;
+  //         this.message.push(msg);
+  //       }});
+  //   }
+  // }
 
   onPatchUser(form: NgForm){
     //api per foto profilo
@@ -189,22 +168,54 @@ export class PaginaPersonaleComponent implements OnInit {
   return false;
   }
 
-  onObservation(form: NgForm){
-    //api per evento
-    console.log(this.store.user)
-    let date = form.value.observationDate._i;
-    console.log(form.value.observationDate._i)
-    let goodDate:string = this.datepipe.transform(date, 'yyyy-MM-ddTHH:mm:ss')!
-    console.log(goodDate)
-    this.http.post("https://localhost:7167/api/PersonalPage/CreateObservation", {
-      UserId: this.store.user.userId,
-      ObservationNote: form.value.observationNote,
-      Place: form.value.place,
-      ObservationDate: goodDate,
-      User: this.store.user
-    }).subscribe((data: any)=>{
-      console.log(data)
-    })
+  selectFiles(files: FileList | null): void {
+    if(files){
+      this.message = [];
+      this.progressInfos = [];
+
+      for (let i = 0; i < files.length; i++) {
+        this.selectedFiles.push(files[i]);
+      }
+
+      this.previews = [];
+      if (this.selectedFiles && this.selectedFiles[0]) {
+        const numberOfFiles = this.selectedFiles.length;
+
+        for (let i = 0; i < numberOfFiles; i++) {
+          const reader = new FileReader();
+
+          reader.onload = (e: any) => {
+            this.previews.push(e.target.result);
+          };
+
+          reader.readAsDataURL(this.selectedFiles[i]);
+        }
+      }
+    }
+  }
+
+  onObservation(form: NgForm) {
+
+     const formData = new FormData();
+    formData.append('UserId', this.user.userId);
+    formData.append('ObservationNote', form.value.observationNote);
+    formData.append('Place', form.value.place);
+    formData.append('ObservationDate', this.datepipe.transform(form.value.observationDate, 'yyyy-MM-ddTHH:mm:ss')!);
+    formData.append('User', this.user);
+
+    if (this.selectedFiles) {
+      this.selectedFiles.forEach((element: File) => {
+        console.log(element)
+        formData.append('Images', element)
+      });
+    }
+
+
+    console.log(formData)
+    this.http.put("https://localhost:7167/api/PersonalPage/CreateObservation", formData)
+      .subscribe((data: any) => {
+        console.log(data);
+      });
   }
 
   applyFilterObservations(event: Event) {

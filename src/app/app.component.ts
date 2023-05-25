@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.store.getAllObjects();
     this.store.getAllObservations();
+    this.store.getAllUsers();
   }
   title = 'AstroBackAngular';
 }

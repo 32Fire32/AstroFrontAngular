@@ -18,6 +18,7 @@ import { MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common'
 import { MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
@@ -45,6 +46,7 @@ import { FilterPipe } from './filter.pipe';
 //services
 import { UpdateService } from './services/update.service';
 import { UploadImagesComponent } from './components/upload-images/upload-images.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -67,10 +69,12 @@ export function tokenGetter() {
     FilterPipe,
     UploadImagesComponent,
     SchedulerComponent,
+    CarouselComponent,
   ],
   imports: [
     MatToolbarModule,
     MomentDateModule,
+    MatMomentDateModule,
     MatNativeDateModule,
     DatePipe,
     MatProgressBarModule,

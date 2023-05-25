@@ -70,11 +70,13 @@ export class AssociazioneComponent implements OnInit {
 
   ngOnInit(): void {
     this.serv.GetAll("https://localhost:7167/api/Admin/GetList").subscribe((data: any) => {
-      console.log(data);
       this.allUsers = data;
       this.dataSource = new MatTableDataSource(this.allUsers);
       this.allUsers.forEach((element: any) => {
-        this.thisId = element.userId
+        if(element.userName == this.username){
+          this.thisId = element.userId
+        }
+        console.log('thisId', this.thisId)
       });
     });
 
@@ -143,7 +145,7 @@ export class AssociazioneComponent implements OnInit {
 
 onEvent(form: NgForm){
   //api per evento
-  let date = form.value.eventDate._i;
+  let date = form.value.eventDate;
   console.log(date.toString())
   let goodDate:string = this.datepipe.transform(date, 'yyyy-MM-dd hh:mm:ss')!
   console.log(goodDate)

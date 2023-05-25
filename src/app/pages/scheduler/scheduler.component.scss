@@ -1,0 +1,14 @@
+.size {
+  width: 200px;
+}
+
+::ng-deep.has-event {
+  background-color: red !important;
+  color: white;
+  border-radius: 50%;
+}
+
+.events{
+  display: flex;
+  align-items: center;
+}

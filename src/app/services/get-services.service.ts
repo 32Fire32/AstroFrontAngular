@@ -50,6 +50,10 @@ export class GetServicesService {
     return this.http.get(`${url}${id}`)
   }
 
+  GetAllObservations(url:string){
+    return this.http.get(url)
+  }
+
   removeObservation(url:string, id:number){
     return this.http.delete(`${url}${id}`)
   }

@@ -6,12 +6,13 @@ import { GetServicesService } from './get-services.service';
 })
 export class StoreService {
 
-  constructor(private serv: GetServicesService) { }
+  constructor(public serv: GetServicesService) { }
 
   user: any = [];
   objects: any = [];
   events: any
   observations: any
+  users:any
 
 
   getAllObjects(){
@@ -23,8 +24,15 @@ export class StoreService {
 
   getAllObservations(){
     this.serv.GetAll("https://localhost:7167/api/PersonalPage/GetObservationsList/").subscribe((data) =>{
-      this.objects = data;
-      console.log(this.objects)
+      this.observations = data;
+      console.log(this.observations)
+    })
+  }
+
+  getAllUsers(){
+    this.serv.GetAllUsers("https://localhost:7167/api/Home/GetList/").subscribe((data) =>{
+      this.users = data;
+      console.log(this.users)
     })
   }
 
