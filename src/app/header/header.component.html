@@ -1,40 +1,73 @@
 <div class="header">
   <div class="logo">
-    <img class="logophoto" src="../../assets/logophoto.png" alt="logophoto">
+    <img class="logophoto" src="../../assets/logophoto.png" alt="logophoto" />
     <span class="logotext"> <b>A.J.A.</b> </span>
   </div>
   <div class="nav">
-    <a routerLink="/" style="margin-right: 10px;">Home</a>
-    <a routerLink="chi-siamo" style="margin-right: 10px;">Chi Siamo</a>
-    <a routerLink="contatti" style="margin-right: 10px;">Contatti</a>
-    <a *ngIf="isAdminAuthenticated()" routerLink="associazione" style="margin-right: 10px;">CMS Admin</a>
+    <a routerLink="/" style="margin-right: 10px">Home</a>
+    <a routerLink="chi-siamo" style="margin-right: 10px">Chi Siamo</a>
+    <a routerLink="contatti" style="margin-right: 10px">Contatti</a>
+    <a
+      *ngIf="isAdmin$ | async"
+      mat-button
+      [matMenuTriggerFor]="cms"
+      style="margin-right: 10px"
+      >CMS Admin</a
+    >
+    <mat-menu #cms="matMenu" xPosition="before">
+      <button
+        routerLink="cms-utenti"
+        style="margin-right: 0px !important; padding: 5px"
+        mat-menu-item
+      >
+        CMS Utenti
+      </button>
+      <button
+        routerLink="cms-eventi"
+        style="margin-right: 0px !important; padding: 5px"
+        mat-menu-item
+      >
+        CMS Eventi
+      </button>
+    </mat-menu>
   </div>
 
   <div class="search">
     <label for="search">Cerca nel Database</label>
-    <input type="text" id="search" [(ngModel)]="searchObj"
-    placeholder="Enter stellar object to search" >
-    <div *ngFor="let o of objects | appFilter: searchObj" >
-      <a [routerLink]="['/database', o.celestialObjectId]" (click)="onClick()" >{{o.name}}</a>
-    </div>
+    <input
+      type="text"
+      id="search"
+      [(ngModel)]="searchObj"
+      placeholder="Enter stellar object to search"
+    />
   </div>
 
-  <div  class="login" *ngIf="isUserAuthenticated()">
+  <div class="login" *ngIf="isAuthorized$ | async">
     <h3>
-      <button mat-button [matMenuTriggerFor]="menu" style="color:inherit">{{username}}</button>
-        <mat-menu #menu="matMenu" xPosition="before">
-          <a routerLink="pagina-personale" style="margin-right: 0px !important; padding: 5px;">Pagina Personale</a>
-        </mat-menu>
+      <a mat-button [matMenuTriggerFor]="menu">{{ userName$ | async }}</a>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <a
+          routerLink="pagina-personale"
+          style="margin-right: 0px !important; padding: 5px"
+          mat-menu-item
+          >Pagina Personale</a
+        >
+      </mat-menu>
     </h3>
-      <a (click)="logOut()" style="margin-right: 10px; cursor: pointer;"><h3>Logout</h3></a>
+    <a (click)="logOut()" style="margin-right: 10px; cursor: pointer"
+      ><h3>Logout</h3></a
+    >
   </div>
 
-  <div class="login"  *ngIf="!isUserAuthenticated()">
-    <a routerLink="register" style="margin-right: 10px;">Registrati</a>
-    <a routerLink="login" style="margin-right: 10px;">Login</a>
+  <div class="login" *ngIf="!(isAuthorized$ | async)">
+    <a routerLink="register" style="margin-right: 10px">Registrati</a>
+    <a routerLink="login" style="margin-right: 10px">Login</a>
   </div>
-
 </div>
-
-
-
+<div class="results">
+  <div *ngFor="let o of objects | appFilter : searchObj">
+    <a [routerLink]="['/database', o.celestialObjectId]" (click)="onClick()">{{
+      o.name
+    }}</a>
+  </div>
+</div>

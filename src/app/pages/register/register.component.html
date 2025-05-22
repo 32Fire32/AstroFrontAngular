@@ -1,18 +1,18 @@
 <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
   <div class="form-container">
     <h1>Registrazione</h1>
-  <div>
-    <mat-form-field appearance="fill">
-      <mat-label>Username:</mat-label>
-      <input matInput type="text" name="UserName" ngModel required>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field appearance="fill">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>userName:</mat-label>
+        <input matInput type="text" name="userName" ngModel required />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
         <mat-label>Password:</mat-label>
-        <input matInput type="password" name="Password" ngModel required>
-    </mat-form-field>
-  </div>
-  <button mat-raised-button type="submit">Registrati</button>
+        <input matInput type="password" name="Password" ngModel required />
+      </mat-form-field>
+    </div>
+    <button mat-raised-button type="submit">Registrati</button>
   </div>
 </form>

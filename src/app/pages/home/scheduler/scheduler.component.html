@@ -1,0 +1,82 @@
+<div class="events">
+  <mat-calendar
+    *ngIf="loadedData"
+    [dateClass]="updateDateClass()"
+    class="size"
+    (selectedChange)="onDateSelected($event)"
+  ></mat-calendar>
+
+  <!-- <app-events></app-events> -->
+  <div *ngIf="loadedData" style="width: calc(100vw / 5 - 10px)">
+    <h4>Evento più recente:</h4>
+    <span>Quando: {{ lastEvent.eventDate }}</span>
+    <h3>Nome: {{ lastEvent.eventName }}</h3>
+    <small>Tipo di Evento: {{lastEvent?.types?.[0]?.eventType?.name}}</small>
+    <div>
+      <img
+        *ngIf="lastEvent.eventImgUrl"
+        else
+        #placeholder
+        id="eventProfile"
+        [src]="pathUrl + lastEvent.eventImgUrl"
+        [alt]="lastEvent.eventName"
+        style="width: 150px"
+      />
+      <img
+        #placeholder
+        id="eventProfile"
+        src="../../../assets/Placeholder_view_vector.svg.png"
+        alt="placeholder"
+        style="width: 150px"
+      />
+    </div>
+    <p>{{ lastEvent.description }}</p>
+    <span>dove: {{ lastEvent.place }}</span>
+  </div>
+  <div *ngIf="loadedData" style="width: calc(100vw / 5 - 10px)">
+    <h4>Prossimo evento:</h4>
+    <div *ngIf="nextEvent?.eventDate">
+      <span>Quando: {{ nextEvent?.eventDate }}</span>
+      <h3>Nome: {{ nextEvent?.eventName }}</h3>
+      <small>Tipo di Evento: {{nextEvent?.types?.[0]?.eventType?.name}}</small>
+      <div>
+        <img
+          id="eventProfile"
+          [src]="pathUrl + nextEvent.eventImgUrl"
+          [alt]="nextEvent.eventName"
+          style="width: 150px"
+        />
+      </div>
+      <p>{{ nextEvent.description }}</p>
+      <span>dove: {{ nextEvent.place }}</span>
+    </div>
+    <div *ngIf="!nextEvent?.eventDate">
+      <p>Nessun evento futuro disponibile.</p>
+    </div>
+  </div>
+  <div *ngIf="event">
+    <div *ngIf="loadedData" style="width: calc(100vw / 5 - 10px)">
+      <h4>Evento selezionato:</h4>
+      <div *ngIf="nextEvent?.eventDate">
+        <span>Quando: {{ nextEvent?.eventDate }}</span>
+        <h3>Nome: {{ nextEvent?.eventName }}</h3>
+        <small
+          >Tipo di Evento: {{nextEvent?.types?.[0]?.eventType?.name}}</small
+        >
+        <div>
+          <img
+            id="eventProfile"
+            [src]="pathUrl + event.eventImgUrl"
+            [alt]="event.eventName"
+            style="width: 150px"
+          />
+        </div>
+        <p>{{ event.description }}</p>
+        <span>dove: {{ event.place }}</span>
+      </div>
+      <div *ngIf="!nextEvent?.eventDate">
+        <p>Nessun evento futuro disponibile.</p>
+      </div>
+    </div>
+  </div>
+</div>

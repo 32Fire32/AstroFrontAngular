@@ -1,0 +1,55 @@
+#myVideo {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: appear 1s 5s forwards;
+}
+.spark-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  animation: white-boom 1s;
+  animation-delay: 5s;
+  overflow: hidden;
+}
+
+.spark {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff; /* Choose your desired spark color */
+  border-radius: 50%;
+  opacity: 0;
+  animation: 2s spark-animation 3s;
+}
+
+@keyframes spark-animation {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px, -200px);
+  }
+}
+
+@keyframes white-boom{
+  0% {
+    background-color: black;
+  }
+  100% {
+    background-color: white;
+  }
+}
+
+@keyframes appear{
+  100% {
+    opacity: 100%;
+  }
+}
+
+

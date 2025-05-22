@@ -1,3 +1,29 @@
 .hide {
   display: none;
 }
+
+.container {
+  text-align: center;
+}
+
+.body-object {
+  display: flex;
+  padding: 20px;
+}
+
+.image {
+  width: 50%;
+  img {
+    width: 100%;
+  }
+}
+
+.description{
+  text-align: left;
+  width: 50%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}

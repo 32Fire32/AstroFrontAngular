@@ -1,0 +1,91 @@
+<mat-dialog-content [formGroup]="editForm" enctype="multipart/form-data">
+  <button mat-button mat-dialog-close>Chiudi</button>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nome Evento:</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="eventName"
+      [ngModel]="element.eventName"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Descrizione:</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="description"
+      [ngModel]="element.description"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Luogo</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="place"
+      [ngModel]="element.place"
+    />
+  </mat-form-field>
+  <mat-label>Foto di copertina</mat-label>
+  <input
+    type="file"
+    class="file-input"
+    (change)="onFileSelected($event)"
+    style="display: none"
+    #fileUpload
+  />
+
+  <div class="file-upload">
+    {{ fileName || "No file uploaded yet." }}
+
+    <button
+      mat-mini-fab
+      color="primary"
+      class="upload-btn"
+      type="button"
+      (click)="fileUpload.click()"
+    >
+      <mat-icon>attach_file</mat-icon>
+    </button>
+
+    <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+      <!-- <img *ngIf="element.eventImgUrl" [src]="imageURL" [alt]="this.store.user.userName" style="width: 50px;"> -->
+      <img
+        [src]="imageURL"
+        [alt]="this.store.user.userName"
+        style="width: 50px"
+      />
+    </div>
+  </div>
+  <mat-form-field appearance="fill">
+    <mat-label>Data</mat-label>
+    <input
+      autocomplete="off"
+      matInput
+      [matDatepicker]="picker"
+      formControlName="eventDate"
+      [ngModel]="element.eventDate"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <!-- <mat-label>--Che tipo di evento?--</mat-label> -->
+    <mat-select formControlName="eventTypeId" [ngModel]="element.eventTypeId">
+      <mat-option value="1">Osservatorio</mat-option>
+      <mat-option value="2">Conferenza</mat-option>
+      <mat-option value="3">Evento Online</mat-option>
+      <mat-option value="4">Trasferta</mat-option>
+      <mat-option value="5">Pranzo/Cena</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="editEvent()">
+      Modifica Evento
+    </button>
+    <button mat-button mat-dialog-close>Chiudi</button>
+  </mat-dialog-actions>
+</mat-dialog-content>

@@ -1,9 +1,17 @@
-<h1>Id oggetto stellare: {{id}}</h1>
-<h2>Nome oggetto stellare: {{object.name}}</h2>
-<img [src]="object.objectImgUrl" [alt]="object.name" style="width: 200px">
-<p>{{object.description}}</p>
-<mat-card-actions *ngIf="isUserAuthenticated()">
-  <button mat-raised-button color="primary"  *ngIf="liked == false" (click)="EditPreferences()">LIKE</button>
-  <button mat-raised-button color="primary" *ngIf="liked == true" (click)="EditPreferences()">UNLIKE</button>
-  <button mat-button>SHARE</button>
-</mat-card-actions>
+<div class="container">
+  <div>
+    <h1>{{object.name}}</h1>
+  </div>
+  <div class="body-object">
+      <div class="image">
+        <img [src]="object.objectImgUrl" [alt]="object.name">
+      </div>
+      <div class="description">
+        <p>{{object.description}}</p>
+        <mat-card-actions *ngIf="isUserAuthenticated()">
+          <button mat-raised-button color="primary"  *ngIf="liked == false" (click)="EditPreferences()">LIKE</button>
+          <button mat-raised-button color="primary" *ngIf="liked == true" (click)="EditPreferences()">DON'T LIKE</button>
+        </mat-card-actions>
+      </div>
+  </div>
+</div>

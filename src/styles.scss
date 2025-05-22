@@ -7,14 +7,12 @@
 
 //GENERAL
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-//STYLES
-.container {
-  width: 1200px;
-  margin: auto;
-}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: black;
+  color: white;
+ }
 
 li{
   list-style: none;

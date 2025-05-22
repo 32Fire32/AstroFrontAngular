@@ -1,14 +1,48 @@
-.info {
-  display: flex;
-  flex-direction: column;
+.image {
+  margin: 20px;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 5px solid rgb(56, 56, 56);
+  .image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.infomanage{
-  display: flex;
-  justify-content: space-around;
+hr{
+  margin: 40px 0px
 }
 
-form{
-  display: flex;
-  flex-direction: column;
+.module {
+  text-align: center;
 }
+
+.grid {
+  margin: 40px 0px
+}
+
+.mat-mdc-form-field{
+  width: 100%;
+  margin: 20px;
+}
+
+.filter {
+  width: 10%;
+  margin: 0;
+}
+
+.new-observation{
+  text-align: center;
+}
+

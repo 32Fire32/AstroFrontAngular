@@ -1,64 +1,52 @@
-import { Component, OnInit,DoCheck } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
-import { StoreService } from '../services/store.service';
+import { Store } from '@ngrx/store';
 import { UpdateService } from '../services/update.service';
+import { Observable } from 'rxjs';
+import {
+  getToken,
+  getUserName,
+  isAuthorized,
+} from '../store/Auth/auth.selectors';
+import { logout } from '../store/Auth/auth.actions';
+import { isAdmin } from '../store/User/user.selectors';
+import { AppState } from '../app.state';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, DoCheck {
+export class HeaderComponent implements OnInit {
+  objects: any = [];
+  searchObj: string = '';
+  token$: Observable<string | null>;
+  userName$: Observable<string | null>;
+  isAuthorized$: Observable<boolean | false>;
+  isAdmin$: Observable<boolean | false>;
 
-  user:any;
-
-  admin: any;
-
-  isAdmin: any;
-
-  username : any;
-
-  objects :any = [];
-
-  searchObj : string = "";
-
-  constructor(private router: Router, private jwtHelper: JwtHelperService, private store: StoreService, private updateService: UpdateService){}
-
-  ngOnInit(): void {
-    this.username = localStorage.getItem("username");
-    this.store.getUser(this.username, this.isAdmin, this.admin)
+  constructor(
+    private router: Router,
+    private jwtHelper: JwtHelperService,
+    private store: Store<AppState>,
+    private updateService: UpdateService
+  ) {
+    this.token$ = this.store.select(getToken);
+    this.userName$ = this.store.select(getUserName);
+    this.isAuthorized$ = this.store.select(isAuthorized);
+    this.isAdmin$ = this.store.select(isAdmin);
   }
 
-  ngDoCheck(): void {
-    this.username = localStorage.getItem("username");
-    this.objects = this.store.objects;
-  }
+  ngOnInit(): void {}
 
-
-  isUserAuthenticated = (): boolean => {
-    const token = localStorage.getItem("jwt");
-  if (token && !this.jwtHelper.isTokenExpired(token)){
-    return true;
-  }
-  return false;
-  }
-
-  isAdminAuthenticated = (): boolean => {
-    const admin = localStorage.getItem("admin");
-  if (admin){
-    return true;
-  }
-  return false;
-  }
-
-  clearInput(){
+  clearInput() {
     this.searchObj = '';
   }
 
-  logOut = () => {
-    localStorage.clear();
-    this.router.navigate(["/"]);
+  logOut() {
+    this.store.dispatch(logout());
+    this.router.navigate(['/login']);
   }
 
   onClick() {

@@ -2,68 +2,70 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GetServicesService {
+  objects: any = [];
 
-  objects :any = [];
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  GetObjects(){
-    return this.http.get("https://localhost:7167/api/CelestialObject/GetList/")
+  GetObjects() {
+    return this.http.get('https://localhost:7167/api/CelestialObject/GetList/');
   }
 
-  GetUser(url:string, username:string){
-    return this.http.get(`${url}${username}`)
+  GetUser(url: string, userName: string) {
+    return this.http.get(`${url}${userName}`);
   }
 
-  GetAll(url: string){
-    return this.http.get(url)
+  GetAll(url: string) {
+    return this.http.get(url);
   }
 
-  GetSingle(url:string, id:string){
-    return this.http.get(`${url}${id}`)
+  GetSingle(url: string, id: string) {
+    return this.http.get(`${url}${id}`);
   }
 
-  PatchUser(url:string, body: {}){
-    return this.http.put(url, body)
+  PatchUser(url: string, body: {}) {
+    return this.http.put(url, body);
   }
 
-  EditPref(url:string, body: {}){
-    return this.http.put(url, body)
+  EditPref(url: string, body: {}) {
+    return this.http.put(url, body);
   }
 
-  GetAllUsers(url:string){
-    return this.http.get(url)
+  GetAllUsers(url: string) {
+    return this.http.get(url);
   }
 
-  removeUser(url:string, id:number){
-    return this.http.delete(`${url}${id}`)
+  removeUser(url: string, id: number) {
+    return this.http.delete(`${url}${id}`);
   }
 
-  removeEvent(url:string, id:number){
-    return this.http.delete(`${url}${id}`)
+  modifyEvent(url: string, body: {}) {
+    return this.http.put(url, body);
   }
 
-  GetUserObservations(url:string, id:string){
-    return this.http.get(`${url}${id}`)
+  removeEvent(url: string, id: number) {
+    return this.http.delete(`${url}${id}`);
   }
 
-  GetAllObservations(url:string){
-    return this.http.get(url)
+  GetUserObservations(url: string, id: string) {
+    return this.http.get(`${url}${id}`);
   }
 
-  removeObservation(url:string, id:number){
-    return this.http.delete(`${url}${id}`)
+  GetAllObservations(url: string) {
+    return this.http.get(url);
   }
 
-  GetAllEvents(url: string){
-    return this.http.get(url)
+  removeObservation(url: string, id: number) {
+    return this.http.delete(`${url}${id}`);
   }
 
-  changeRole(url:string, body: {}){
-  return this.http.post(url, body);
+  GetAllEvents(url: string) {
+    return this.http.get(url);
   }
 
+  changeRole(url: string, body: {}) {
+    return this.http.post(url, body);
+  }
 }

@@ -1,54 +1,51 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { LoginModel } from 'src/app/_interfaces/login.model';
+import { Store, select } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { login } from 'src/app/store/Auth/auth.actions';
+import {
+  getUserName,
+  getToken,
+  isAuthorized,
+  loginError,
+} from 'src/app/store/Auth/auth.selectors';
+import { Observable } from 'rxjs';
 import { GetServicesService } from 'src/app/services/get-services.service';
 import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  invalidLogin: boolean | undefined;
-
-  credentials: LoginModel = {username:'', password:''};
-
-  user: any = [];
-
-  username: any;
-
+  credentials: LoginModel = { userName: '', password: '' };
+  isAuthorized$: Observable<boolean | false>;
+  loginError$: Observable<boolean | false>;
+  userName$: Observable<string | null>;
   isAdmin: any;
-
-  admin: any
-
-  constructor(private router: Router, private http: HttpClient, private serv: GetServicesService, private store: StoreService) { }
-  ngOnInit(): void {
-
+  admin: any;
+  constructor(private store: Store<AppState>) {
+    this.isAuthorized$ = this.store.pipe(select(isAuthorized));
+    this.loginError$ = this.store.pipe(select(loginError));
+    this.userName$ = this.store.pipe(select(getUserName));
   }
-  login = ( form: NgForm) => {
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  login(form: NgForm): void {
     if (form.valid) {
-      this.http.post("https://localhost:7167/api/Login/login", this.credentials, {
-        headers: new HttpHeaders({ "Content-Type": "application/json"}),
-        responseType: "text"
-      })
-      .subscribe(
-        data => {
-          const token = data
-          localStorage.setItem("jwt", token);
-          const username = this.credentials.username
-          localStorage.setItem("username", username)
-          this.invalidLogin = false;
-          this.router.navigate(["/"]);
-          this.username = localStorage.getItem("username")
-          this.store.getUser(this.username, this.isAdmin, this.admin)
-        },
-        error => {
-          this.invalidLogin = true
-        }
-      )
+      console.log('Dispatching login:', this.credentials); // ✅ DEBUG
+      if (this.store) {
+        this.store.dispatch(
+          login({
+            userName: this.credentials.userName,
+            password: this.credentials.password,
+          })
+        );
+      }
     }
   }
 }

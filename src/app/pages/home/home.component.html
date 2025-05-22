@@ -1,43 +1,25 @@
-<div *ngIf="username; then bloccoIf else bloccoElse"></div>
-<ng-template #bloccoIf ><h1>Ciao {{username}}!</h1></ng-template>
-<ng-template #bloccoElse ><h1>Ciao {{notLoggedIn}}</h1></ng-template>
-
-<section>
-  <span>
-    Hero - Intro
-  </span>
-</section>
-<hr>
-<section>
-  <span>
-    <h2>I Prossimi Eventi</h2>
-  <app-scheduler></app-scheduler>
-  </span>
-</section>
-<hr>
-<section>
-  <span>
-    Foto Osservazioni Utenti Registrati
-  </span>
-  <app-carousel></app-carousel>
-</section>
-<hr>
-<section class="d-flex">
+<app-hero></app-hero>
+<div class="container">
+  <section>
+    <app-scheduler></app-scheduler>
+  </section>
+  <hr>
+  <section>
+    <span>
+      Foto Osservazioni Utenti Registrati
+    </span>
+    <app-carousel></app-carousel>
+  </section>
+  <hr>
+  <section class="d-flex">
     <div>
-    <!-- meteo -->
-      <div id="cont_48875c500b3ce2c17d5a6fcb742d9dd1">
-        <script type="text/javascript" async src="https://www.ilmeteo.net/wid_loader/48875c500b3ce2c17d5a6fcb742d9dd1"></script>
-      </div>
-      <!-- seeing -->
-      <iframe src="https://www.meteoblue.com/it/tempo/widget/seeing/jesi_italia_3175628?geoloc=fixed&noground=0"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 520px; height: 753px"></iframe>
-      <div>
-        <a href="https://www.meteoblue.com/it/tempo/previsioni/seeing/san-donato-in-fronzano_italia_6951102?utm_source=weather_widget&utm_medium=linkus&utm_content=seeing&utm_campaign=Weather%2BWidget" target="_blank" rel="noopener">
-        </a>
-      </div>
+      <button class="meteo" mat-button (click)="openDialog()">Controlla il meteo <mat-icon>cloud</mat-icon></button>
     </div>
     <div>
       <span>
         News Astronomia
       </span>
     </div>
-</section>
+  </section>
+</div>
+

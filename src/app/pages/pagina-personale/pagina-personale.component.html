@@ -1,179 +1,322 @@
-<h1 style="text-align: center; padding: 20px">Pagina personale di {{username}}</h1>
-
-<div class="infomanage">
-    <div class="info">
-      <span>Foto del profilo: <img id="imageProfile" [src]='pathUrl + this.store.user.profileImgUrl' [alt]="username" style="width: 150px"> </span>
-      <span>Username: <b id="username">{{username ? username : "nessun utente loggato"}}</b></span>
-      <span>Nome: <b id="firstname">{{this.store.user.firstName ? this.store.user.firstName : "nessun nome inserito"}}</b></span>
-      <span>Cognome: <b id="lastname">{{this.store.user.lastName ? this.store.user.lastName : "nessun cognome inserito"}}</b></span>
-      <span>Email: <b id="email">{{this.store.user.email ? this.store.user.email : "nessuna email inserita"}}</b></span>
-      <span>Sei iscritto?:
-        <b class="subscribed"*ngIf="this.store.user.subscribed" >Si</b>
-        <b class="subscribed" *ngIf="!this.store.user.subscribed" >No</b>
-      </span>
-      <span *ngFor="let pref of this.store.user.celestialObjectsPreferences">{{pref.celestialObject.name}}</span>
-      <span *ngFor="let role of this.store.user.roles">{{role.role.roleId}}</span>
-      <button (click)="modify()">Aggiungi Informazioni</button>
-    </div>
-
-    <div *ngIf="update">
-      <form #patchForm="ngForm" (ngSubmit)="onPatchUser(patchForm)" enctype="multipart/form-data">
-        <mat-form-field appearance="fill">
-          <mat-label>Nuovo Username</mat-label>
-          <input matInput type="text" name="userName" ngModel>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Nuovo Nome</mat-label>
-          <input matInput type="text" name="firstName" ngModel>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Nuovo Cognome</mat-label>
-          <input matInput type="text" name="lastName" ngModel>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Nuova Email</mat-label>
-          <input matInput type="email" name="email" ngModel>
-        </mat-form-field>
-          <input type="file" class="file-input"
-            (change)="onFileSelected($event)" style="display: none" #fileUpload>
-
-              <div class="file-upload">
-
-                {{fileName || "No file uploaded yet."}}
-
-                <button mat-mini-fab color="primary" class="upload-btn" type="button"
-                (click)="fileUpload.click()">
-                  <mat-icon>attach_file</mat-icon>
-                </button>
-
-                <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
-                  <img [src]="imageURL" [alt]="this.store.user.username" style="width: 50px;">
-                </div>
-
-              </div>
-        <mat-form-field appearance="fill">
-            <mat-label>--Sei iscritto?--</mat-label>
-            <mat-select name="subscribed" ngModel>
-              <mat-option value="true">Si</mat-option>
-              <mat-option value="false">No</mat-option>
-            </mat-select>
-        </mat-form-field>
-          <button mat-raised-button color="primary">Modifica informazioni</button>
-      </form>
-    </div>
-
-</div>
-
-<h2>Aggiungi la tua osservazione</h2>
-
-<form #observationForm="ngForm" (ngSubmit)="onObservation(observationForm)" enctype="multipart/form-data">
-  <mat-form-field appearance="fill">
-    <mat-label>Descrizione dell'osservazione:</mat-label>
-    <input matInput type="text" name="observationNote" ngModel>
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Luogo:</mat-label>
-    <input matInput type="text" name="place" ngModel>
-  </mat-form-field>
-  <mat-label>Aggiungi le foto:</mat-label>
-  <div *ngFor="let progressInfo of progressInfos" class="mb-2">
-    <span>{{ progressInfo.fileName }}</span>
-    <div class="progress">
-      <div
-        class="progress-bar progress-bar-info progress-bar-striped"
-        role="progressbar"
-        attr.aria-valuenow="{{ progressInfo.value }}"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        [ngStyle]="{ width: progressInfo.value + '%' }"
-      >
-        {{ progressInfo.value }}%
+<div class="container">
+  <form
+    class="module"
+    #patchForm="ngForm"
+    (ngSubmit)="onPatchUser(patchForm)"
+    enctype="multipart/form-data"
+  >
+    <div class="image">
+      <div class="image-wrapper">
+        <img
+          id="imageProfile"
+          [src]="pathUrl + this.store.user.profileImgUrl"
+          [alt]="userName"
+        />
       </div>
     </div>
-  </div>
+    <mat-grid-list class="grid" cols="2" rowHeight="100">
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>userName</mat-label>
+          <input
+            matInput
+            type="text"
+            name="userName"
+            [ngModel]="userName"
+            [disabled]="!edit"
+          />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Nome</mat-label>
+          <input
+            matInput
+            type="text"
+            name="firstName"
+            [ngModel]="
+              this.store.user.firstName
+                ? this.store.user.firstName
+                : 'nessun nome inserito'
+            "
+            [disabled]="!edit"
+          />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Cognome</mat-label>
+          <input
+            matInput
+            type="text"
+            name="lastName"
+            [ngModel]="
+              this.store.user.lastName
+                ? this.store.user.lastName
+                : 'nessun cognome inserito'
+            "
+            [disabled]="!edit"
+          />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            name="email"
+            [ngModel]="
+              this.store.user.email
+                ? this.store.user.email
+                : 'nessuna email inserita'
+            "
+            [disabled]="!edit"
+          />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>--Sei iscritto?--</mat-label>
+          <mat-select
+            name="subscribed"
+            [ngModel]="this.store.user.subscribed ? 'true' : 'false'"
+            [disabled]="!edit"
+          >
+            <mat-option value="true">Si</mat-option>
+            <mat-option value="false">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <input
+          type="file"
+          class="file-input"
+          (change)="onFileSelected($event)"
+          style="display: none"
+          #fileUpload
+        />
 
-  <div class="row">
-    <div class="col-8">
-      <label class="btn btn-default p-0">
-        <input #fileInput type="file" accept="image/*" multiple (change)="selectFiles(fileInput.files)"/>
-      </label>
-    </div>
-  </div>
+        <div class="file-upload">
+          {{ fileName || "No file uploaded yet." }}
+          <button
+            mat-mini-fab
+            color="primary"
+            class="upload-btn"
+            type="button"
+            (click)="fileUpload.click()"
+          >
+            <mat-icon>attach_file</mat-icon>
+          </button>
+          <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+            <img
+              [src]="imageURL"
+              [alt]="this.store.user.userName"
+              style="width: 50px"
+            />
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <button
+      *ngIf="!edit"
+      (click)="enableEdit()"
+      mat-raised-button
+      color="primary"
+    >
+      Modifica
+    </button>
+    <button *ngIf="edit" mat-raised-button color="primary">
+      Modifica informazioni
+    </button>
+  </form>
 
-  <div>
-    <img *ngFor='let preview of previews' [src]="preview" class="preview">
-  </div>
+  <hr />
+  <div class="new-observation">
+    <button (click)="modify()" mat-raised-button color="primary">
+      Aggiungi la tua osservazione
+    </button>
 
-  <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
-    <ul *ngFor="let msg of message; let i = index">
-      <li>{{ msg }}</li>
-    </ul>
-  </div>
+    <form
+      *ngIf="addObservation"
+      #observationForm="ngForm"
+      (ngSubmit)="onObservation(observationForm)"
+      enctype="multipart/form-data"
+    >
+      <mat-grid-list class="grid" cols="2" rowHeight="100">
+        <mat-grid-tile>
+          <mat-form-field appearance="fill">
+            <mat-label>Descrizione dell'osservazione:</mat-label>
+            <input matInput type="text" name="observationNote" ngModel />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="fill">
+            <mat-label>Luogo:</mat-label>
+            <input matInput type="text" name="place" ngModel />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-label>Aggiungi le foto:</mat-label>
+          <!-- <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+        <span>{{ progressInfo.fileName }}</span>
+        <div class="progress">
+          <div
+          class="progress-bar progress-bar-info progress-bar-striped"
+          role="progressbar"
+          attr.aria-valuenow="{{ progressInfo.value }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          [ngStyle]="{ width: progressInfo.value + '%' }"
+          >
+          {{ progressInfo.value }}%
+        </div>
+      </div>
+    </div> -->
 
-  <div class="card mt-3">
-    <div class="card-header">List of Images</div>
-    <ul
+          <div class="row">
+            <div class="col-8">
+              <label class="btn btn-default p-0">
+                <input
+                  #fileInput
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  (change)="selectFiles(fileInput.files)"
+                  style="display: none"
+                  #fileObsUpload
+                />
+              </label>
+            </div>
+            <button
+              mat-mini-fab
+              color="primary"
+              class="upload-btn"
+              type="button"
+              (click)="fileObsUpload.click()"
+            >
+              <mat-icon>attach_file</mat-icon>
+            </button>
+          </div>
+
+          <div>
+            <img
+              *ngFor="let preview of previews"
+              [src]="preview"
+              class="preview"
+            />
+          </div>
+
+          <div
+            *ngIf="message.length"
+            class="alert alert-secondary my-3"
+            role="alert"
+          >
+            <ul *ngFor="let msg of message; let i = index">
+              <li>{{ msg }}</li>
+            </ul>
+          </div>
+
+          <!-- <div class="card mt-3">
+      <div class="card-header">List of Images</div>
+      <ul
       class="list-group list-group-flush"
       *ngFor="let image of imageInfos | async"
-    >
-      <li class="list-group-item">
-        <p><a href="{{ image.url }}">{{ image.name }}</a></p>
-        <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
-      </li>
-    </ul>
+        >
+          <li class="list-group-item">
+            <p><a href="{{ image.url }}">{{ image.name }}</a></p>
+            <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
+          </li>
+        </ul>
+      </div> -->
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field appearance="fill">
+            <mat-label>Data</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              name="observationDate"
+              ngModel
+            />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <button type="submit" mat-raised-button color="primary">
+        Pubblica Nuova Osservazione
+      </button>
+    </form>
   </div>
-    <mat-form-field appearance="fill">
-      <mat-label>Data</mat-label>
-      <input matInput [matDatepicker]="picker" name="observationDate" ngModel>
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <button type="submit" mat-raised-button color="primary">Pubblica Nuova Osservazione</button>
-</form>
 
-<hr>
-<h2>Le tue osservazioni passate:</h2>
+  <hr />
+  <h2>Le tue osservazioni passate:</h2>
 
-<mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilterObservations($event)" placeholder="Ex. ium" #input>
-</mat-form-field>
+  <mat-form-field class="filter">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilterObservations($event)"
+      placeholder="Ex. ium"
+      #input
+    />
+  </mat-form-field>
 
-<table mat-table [dataSource]="dataSourceObservations" class="mat-elevation-z8">
+  <table
+    mat-table
+    [dataSource]="dataSourceObservations"
+    class="mat-elevation-z8"
+  >
+    <!-- Description Column -->
+    <ng-container matColumnDef="Description">
+      <th mat-header-cell *matHeaderCellDef>Descrizione:</th>
+      <td mat-cell *matCellDef="let element">{{ element.observationNote }}</td>
+    </ng-container>
 
-  <!-- Description Column -->
-  <ng-container matColumnDef="Description">
-    <th mat-header-cell *matHeaderCellDef> Descrizione: </th>
-    <td mat-cell *matCellDef="let element"> {{element.observationNote}} </td>
-  </ng-container>
+    <!-- ObservationDate Column -->
+    <ng-container matColumnDef="ObservationDate">
+      <th mat-header-cell *matHeaderCellDef>Data dell'osservazione:</th>
+      <td mat-cell *matCellDef="let element">{{ element.observationDate }}</td>
+    </ng-container>
 
-  <!-- ObservationDate Column -->
-  <ng-container matColumnDef="ObservationDate">
-    <th mat-header-cell *matHeaderCellDef> Data dell'osservazione: </th>
-    <td mat-cell *matCellDef="let element"> {{element.observationDate}} </td>
-  </ng-container>
+    <!-- Place Column -->
+    <ng-container matColumnDef="Place">
+      <th mat-header-cell *matHeaderCellDef>Luogo:</th>
+      <td mat-cell *matCellDef="let element">{{ element.place }}</td>
+    </ng-container>
 
-  <!-- Place Column -->
-  <ng-container matColumnDef="Place">
-    <th mat-header-cell *matHeaderCellDef> Luogo: </th>
-    <td mat-cell *matCellDef="let element"> {{element.place}} </td>
-  </ng-container>
+    <!-- delete Column -->
+    <ng-container matColumnDef="Delete">
+      <th mat-header-cell *matHeaderCellDef>Azioni</th>
+      <button
+        mat-cell
+        mat-fab
+        color="primary"
+        *matCellDef="let element"
+        (click)="deleteObservation(element.observationId)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </ng-container>
 
-  <!-- delete Column -->
-  <ng-container matColumnDef="Delete">
-    <th mat-header-cell *matHeaderCellDef> Cancella Osservazione </th>
-    <button  mat-cell *matCellDef="let element" (click)="deleteObservation(element.observationId)">Cancella</button>
-  </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedObservationsColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedObservationsColumns"
+    ></tr>
 
-  <tr mat-header-row *matHeaderRowDef="displayedObservationsColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedObservationsColumns;"></tr>
-
-  <!-- Row shown when there is no matching data. -->
-  <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-  </tr>
-</table>
-
-
-
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">
+        No data matching the filter "{{ input.value }}"
+      </td>
+    </tr>
+  </table>
+</div>
